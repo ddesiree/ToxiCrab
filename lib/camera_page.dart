@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'main.dart';
+import 'display_page.dart';
+import 'dart:math';
 
 class CameraPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -10,6 +11,20 @@ class CameraPage extends StatefulWidget {
   @override
   State<CameraPage> createState() => _CameraPageState();
 }
+
+//PANG SIMULATE RA NI, TANGGALA IF NAA NA ANG ML MODEL------------------
+final List<Map<String, dynamic>> testResults = [
+  {"label": "toxic", "confidence": 0.91},
+  {"label": "non_toxic", "confidence": 0.88},
+  {"label": "unknown", "confidence": 0.40},
+];
+
+Map<String, dynamic> getRandomResult() {
+  final random = Random();
+  return testResults[random.nextInt(testResults.length)];
+}
+//HANTUD DIRI -----------------------------------------------------------
+
 
 class _CameraPageState extends State<CameraPage> {
   late CameraController _controller;
@@ -89,7 +104,7 @@ class _CameraPageState extends State<CameraPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 10), // some spacing from top / AppBar
+            const SizedBox(height: 10), 
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -105,7 +120,6 @@ class _CameraPageState extends State<CameraPage> {
 
                   const SizedBox(width: 10), // space between image and text
 
-                  // TITLE + TAGLINE
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -179,11 +193,20 @@ class _CameraPageState extends State<CameraPage> {
                         const SizedBox(height: 50),
                         ElevatedButton(
                           onPressed: () {
-                            // Your scan action here
+                            //------------------------------------------------------
+                            final result = getRandomResult();
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => DisplayPage(result: result),
+                              ),
+                            );
+                            //------------------------------------------------------
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFDB850), // Button color
-                            foregroundColor: Colors.white, // Text color
+                            backgroundColor: const Color(0xFFFDB850),
+                            foregroundColor: Colors.white, 
                             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40), 
@@ -192,8 +215,8 @@ class _CameraPageState extends State<CameraPage> {
                           child: const Text(
                             "Scan",
                             style: TextStyle(
-                              fontSize: 16, // optional text size
-                              fontWeight: FontWeight.bold, // optional
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         )
