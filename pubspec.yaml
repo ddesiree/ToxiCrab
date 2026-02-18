@@ -112,6 +112,7 @@ flutter:
     - assets/images/home.png
     - assets/images/camera.png
     - assets/images/night-mode.png
+    - assets/images/light-mode.png
     - assets/images/LOGO OFFICIAL.png
     - assets/images/1.png
     - assets/images/2.png

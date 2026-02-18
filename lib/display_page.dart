@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'camera_page.dart';
+import 'package:toxicrab/main.dart';
 
 class DisplayPage extends StatelessWidget {
   final Map<String, dynamic> result;
@@ -37,6 +38,7 @@ class DisplayPage extends StatelessWidget {
                 'assets/images/home.png',
                 width: 32,
                 height: 32,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ),
@@ -56,17 +58,23 @@ class DisplayPage extends StatelessWidget {
                 'assets/images/camera.png',
                 width: 31,
                 height: 31,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 6.0),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                MyApp.of(context).toggleTheme();
+              },
               icon: Image.asset(
-                'assets/images/night-mode.png',
+                MyApp.of(context).themeMode == ThemeMode.light
+                  ? 'assets/images/night-mode.png'
+                  : 'assets/images/light-mode.png',
                 width: 27,
                 height: 27,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ),
@@ -92,11 +100,11 @@ class DisplayPage extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.black,
                         fontFamily: 'HindVadodara',
+                        color: Theme.of(context).colorScheme.onBackground,
                       ),
                       children: [
                         TextSpan(
@@ -221,11 +229,11 @@ class DisplayPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: RichText(
                   textAlign: TextAlign.justify,
-                  text: const TextSpan(
+                  text: TextSpan(
                     style: TextStyle(
                       fontSize: 9,
                       fontFamily: 'HindVadodara',
-                      color: Colors.black, // default text color
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                     children: [
                       TextSpan(text: "Note: "),

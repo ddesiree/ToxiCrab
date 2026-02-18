@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'display_page.dart';
 import 'dart:math';
+import 'package:toxicrab/main.dart';
 
 class CameraPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -65,6 +66,7 @@ class _CameraPageState extends State<CameraPage> {
                 'assets/images/home.png',
                 width: 32,
                 height: 32,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ),
@@ -79,6 +81,7 @@ class _CameraPageState extends State<CameraPage> {
                 'assets/images/camera.png',
                 width: 31,
                 height: 31,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ),
@@ -87,12 +90,15 @@ class _CameraPageState extends State<CameraPage> {
             padding: const EdgeInsets.only(right: 6.0),
             child: IconButton(
               onPressed: () {
-                // You can add dark mode toggle later
+                MyApp.of(context).toggleTheme();
               },
               icon: Image.asset(
-                'assets/images/night-mode.png',
+                MyApp.of(context).themeMode == ThemeMode.light
+                  ? 'assets/images/night-mode.png'
+                  : 'assets/images/light-mode.png',
                 width: 27,
                 height: 27,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ),
@@ -122,10 +128,10 @@ class _CameraPageState extends State<CameraPage> {
 
                   RichText(
                     text: TextSpan(
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
-                        color: Colors.black,
                         fontFamily: 'HindVadodara',
+                        color: Theme.of(context).colorScheme.onBackground,
                       ),
                       children: const [
                         TextSpan(
@@ -154,11 +160,11 @@ class _CameraPageState extends State<CameraPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black,
                       fontFamily: 'HindVadodara',
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                     children: [
                       TextSpan(

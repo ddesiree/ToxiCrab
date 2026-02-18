@@ -5,22 +5,55 @@ import 'upload_page.dart';
 
 late List<CameraDescription> cameras;
 
+//LIGHT AND DARK THEME
+final ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
+  primaryColor: const Color(0xFFFDB850),
+  scaffoldBackgroundColor: Colors.white,
+);
+
+final ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  primaryColor: const Color(0xFFFDB850),
+  scaffoldBackgroundColor:Color(0xFF1E1E1E),
+);
+//
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  static _MyAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>()!;
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.light;
+
+  void toggleTheme() {
+    setState(() {
+      _themeMode =
+          _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
+
+  ThemeMode get themeMode => _themeMode;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        
-      ),
+      title: 'ToxiCrab',
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: _themeMode,
       home: const MyHomePage(title: ''),
     );
   }
@@ -61,11 +94,12 @@ class _MyHomePageState extends State<MyHomePage> {
               'assets/images/home.png',
               width: 32, 
               height: 32,
+              color: Theme.of(context).iconTheme.color,
             ),
           ),
 
           Padding(
-            padding: const EdgeInsets.only(right: 15.0),
+            padding: const EdgeInsets.only(right: 5.0),
             child: IconButton(
               onPressed: () {
                 Navigator.push(
@@ -79,17 +113,26 @@ class _MyHomePageState extends State<MyHomePage> {
                 'assets/images/camera.png',
                 width: 31,
                 height: 31,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ),
 
 
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Image.asset(
-              'assets/images/night-mode.png', 
-              width: 27,  
-              height: 27,
+            padding: const EdgeInsets.only(right: 5.0),
+            child: IconButton(
+              onPressed: () {
+                MyApp.of(context).toggleTheme();
+              },
+              icon: Image.asset(
+                MyApp.of(context)._themeMode == ThemeMode.light
+                  ? 'assets/images/night-mode.png'
+                  : 'assets/images/light-mode.png',
+                width: 27,
+                height: 27,
+                color: Theme.of(context).iconTheme.color,
+              ),
             ),
           ),
         ],
@@ -132,11 +175,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'InclusiveSans',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: Colors.black,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                     children: [
                       const TextSpan(
@@ -179,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   backgroundColor: const Color(0xFFFDB850),
                   foregroundColor: Colors.white,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -208,7 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFDB850),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -326,13 +369,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
               const SizedBox(height: 40),
 
-              const Text(
+              Text(
                 '© 2026 ToxiCrab. All Rights Reserved.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'InclusiveSans',
                   fontSize: 12,
-                  color: Colors.black54,
+                  color: Theme.of(context).colorScheme.onBackground.withOpacity(0.54),
                 ),
               ),
 
